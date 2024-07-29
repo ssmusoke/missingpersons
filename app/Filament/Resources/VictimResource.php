@@ -52,6 +52,7 @@ class VictimResource extends Resource
                     ->required(),
                 Forms\Components\DateTimePicker::make('status_date')
                     ->default(now())
+                    ->afterOrEqual('2024-07-23')
                     ->required(),
                 Forms\Components\Select::make('security_organ_id')
                     ->label("Security Organ")
@@ -67,20 +68,23 @@ class VictimResource extends Resource
                 Forms\Components\Select::make('remanded_from_id')
                     ->label("Remanded From (Court Name)")
                     ->options(HoldingLocation::all()->pluck('name', 'id'))
-                    ->searchable(), 
+                    ->searchable(),
                 Forms\Components\TextInput::make('remanded_by')
                     ->label("Remanded By (Judge Name)")
-                    ->maxLength(255), 
+                    ->maxLength(255),
                 Forms\Components\Select::make('remanded_to_id')
                     ->label("Remanded To")
                     ->options(HoldingLocation::all()->pluck('name', 'id'))
                     ->searchable(),
                 Forms\Components\DatePicker::make('remanded_on')
-                    ->label("Remanded On"),
+                    ->label("Remanded On")
+                    ->afterOrEqual('status_date'),
                 Forms\Components\DatePicker::make('remanded_until')
-                    ->label("Remanded Until"),
+                    ->label("Remanded Until")
+                    ->afterOrEqual('remanded_on'),
                 Forms\Components\DatePicker::make('released_on')
-                    ->label("Released On"),
+                    ->label("Released On")
+                    ->beforeOrEqual(now()),
                 Forms\Components\RichEditor::make('notes'),
                 Forms\Components\Toggle::make('confirmed')
                     ->onColor('success')
